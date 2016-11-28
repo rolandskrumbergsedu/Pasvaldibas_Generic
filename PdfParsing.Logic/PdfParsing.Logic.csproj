@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\GeneralHandler.cs" />
+    <Compile Include="Handlers\JelgavaPilsetaHandler.cs" />
     <Compile Include="Handlers\SalacgrivaHandler.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

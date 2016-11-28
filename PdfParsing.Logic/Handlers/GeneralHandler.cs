@@ -8,13 +8,13 @@ namespace PdfParsing.Logic.Handlers
 {
     public class GeneralHandler
     {
-        private List<string> _attendedStartIndexMark;
-        private List<string> _attendedEndIndexMark;
-        private List<string> _notAttendedStartIndexMark;
-        private List<string> _notAttendedEndIndexMark;
-        private string[] _attendedSplitOptions;
-        private string[] _notAttendedSplitOptions;
-        private string[] _notAttendedInternalSplitOptions;
+        private readonly List<string> _attendedStartIndexMark;
+        private readonly List<string> _attendedEndIndexMark;
+        private readonly List<string> _notAttendedStartIndexMark;
+        private readonly List<string> _notAttendedEndIndexMark;
+        private readonly string[] _attendedSplitOptions;
+        private readonly string[] _notAttendedSplitOptions;
+        private readonly string[] _notAttendedInternalSplitOptions;
 
         public GeneralHandler(List<string> attendedStartIndexMark, 
             List<string> attendedEndIndexMark,
@@ -33,7 +33,7 @@ namespace PdfParsing.Logic.Handlers
             _notAttendedInternalSplitOptions = notAttendedInternalSplitOptions;
         }
 
-        public void Handle(List<string> rawData, out IEnumerable<string> attended, out Dictionary<string, string> notAttended)
+        public void Handle(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended)
         {
             // Get attended start index
             var attendedStartIndex = GetIndex(rawData, _attendedStartIndexMark);
@@ -76,6 +76,23 @@ namespace PdfParsing.Logic.Handlers
             return -1;
         }
 
+        private static int GetIndex(IList<string> rawData, List<string> marks, int startIndex)
+        {
+            var counter = startIndex;
+
+            for (var i = startIndex; i < rawData.Count; i++)
+            {
+                if (marks.Any(mark => rawData[i].StartsWith(mark)))
+                {
+                    return counter;
+                }
+
+                counter++;
+            }
+
+            return counter;
+        }
+
         private static string ConcatenateRows(IReadOnlyList<string> rawData, int startIndex, int endIndex)
         {
             var result = string.Empty;
@@ -93,9 +110,9 @@ namespace PdfParsing.Logic.Handlers
             return removableItems.Aggregate(data, (current, removableItem) => current.Replace(removableItem, string.Empty));
         }
 
-        private static IEnumerable<string> Split(string data, string[] splitters)
+        private static List<string> Split(string data, string[] splitters)
         {
-            return data.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+            return data.Split(splitters, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         private static Dictionary<string, string> Split(string data, string[] splitters, string[] internalSplitters)
