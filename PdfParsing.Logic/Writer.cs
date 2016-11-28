@@ -18,18 +18,13 @@ namespace PdfParsing.Logic
 
             foreach (var deputats in attending)
             {
-                var vards = deputats.Replace("š", "s").Replace("Š", "S");
-                var dat = date.Replace("Salacgriva         ", string.Empty);
-                csv.Append($"{vards.Trim()},{dat.Trim()},1,-");
+                csv.Append($"{deputats.Trim()},{date.Trim()},1,-");
                 csv.Append(Environment.NewLine);
             }
 
             foreach (var deputats in notAttending)
             {
-                var vards = deputats.Key.Replace("š", "s").Replace("Š", "S");
-                var dat = date.Replace("Salacgriva         ", string.Empty);
-                var iemesls = deputats.Value;
-                csv.Append($"{vards.Trim()},{dat.Trim()},0,{iemesls.Trim()}");
+                csv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
                 csv.Append(Environment.NewLine);
             }
 
