@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Org.BouncyCastle.Asn1;
 
 namespace PdfParsing.Logic.Handlers
 {
@@ -15,60 +16,78 @@ namespace PdfParsing.Logic.Handlers
         private readonly string[] _attendedSplitOptions;
         private readonly string[] _notAttendedSplitOptions;
         private readonly string[] _notAttendedInternalSplitOptions;
+        private readonly Dictionary<string, string> _deputati;
 
-        public GeneralHandler(List<string> attendedStartIndexMark, 
+        public GeneralHandler(
+            List<string> attendedStartIndexMark,
             List<string> attendedEndIndexMark,
             List<string> notAttendedStartIndexMark,
             List<string> notAttendedEndIndexMark,
             string[] attendedSplitOptions,
             string[] notAttendedSplitOptions,
-            string[] notAttendedInternalSplitOptions)
+            string[] notAttendedInternalSplitOptions,
+            Dictionary<string, string> deputati)
         {
             _attendedStartIndexMark = attendedStartIndexMark;
             _attendedEndIndexMark = attendedEndIndexMark;
             _notAttendedStartIndexMark = notAttendedStartIndexMark;
             _notAttendedEndIndexMark = notAttendedEndIndexMark;
+
             _attendedSplitOptions = attendedSplitOptions;
             _notAttendedSplitOptions = notAttendedSplitOptions;
+
             _notAttendedInternalSplitOptions = notAttendedInternalSplitOptions;
+
+            _deputati = deputati;
+        }
+
+        public void HandleJoined(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended)
+        {
+            // Get attended start index
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, true);
+
+            // Get attended end index
+            var endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+            
+            var attendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
+
+            attended = GetAttended(attendedList, _attendedSplitOptions);
+
+            // Get attended start index
+            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, false);
+
+            if (startIndex > 0)
+            {
+                // Get attended end index
+                endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+
+                var notAttendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
+
+                notAttended = GetNotAttended(notAttendedList, _notAttendedSplitOptions);
+            }
+            else
+            {
+                notAttended = new Dictionary<string, string>();
+            }
+
         }
 
         public void Handle(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended)
         {
-            // Get attended start index
-            var attendedStartIndex = GetIndex(rawData, _attendedStartIndexMark);
-
-            // Get attended end index
-            var attendedEndIndex = GetIndex(rawData, _attendedEndIndexMark);
-
-            // Concatenate and clean attened 
-            var attendedConcatenated = ConcatenateRows(rawData, attendedStartIndex, attendedEndIndex);
-            var attendedCleaned = CleanData(attendedConcatenated, _attendedStartIndexMark);
-
-            // Split attended
-            attended = Split(attendedCleaned, _attendedSplitOptions);
-
-            // Get not attended start index
-            var notAttendedStartIndex = GetIndex(rawData, _notAttendedStartIndexMark);
-
-            // Get not attended end index
-            var notAttendedEndIndex = GetIndex(rawData, _notAttendedEndIndexMark);
-
-            // Concatenate and clean not attened 
-            var notAttendedConcatenated = ConcatenateRows(rawData, notAttendedStartIndex, notAttendedEndIndex);
-            var notAttendedCleaned = CleanData(notAttendedConcatenated, _notAttendedStartIndexMark);
-            
-            // Split not attended
-            notAttended = Split(notAttendedCleaned, _notAttendedSplitOptions, _notAttendedInternalSplitOptions);
+            HandleJoined(rawData, out attended, out notAttended);
         }
 
-        private static int GetIndex(IList<string> rawData, IEnumerable<string> marks)
+        private static int GetIndex(IList<string> rawData, IEnumerable<string> marks, bool nextLine)
         {
             foreach (var mark in marks)
             {
                 var index = rawData.IndexOf(rawData.FirstOrDefault(x => x.StartsWith(mark)));
                 if (index != -1)
                 {
+                    if (nextLine)
+                    {
+                        index++;
+                    }
                     return index;
                 }
             }
@@ -76,49 +95,191 @@ namespace PdfParsing.Logic.Handlers
             return -1;
         }
 
-        private static int GetIndex(IList<string> rawData, List<string> marks, int startIndex)
+        private static int GetEndIndex(IList<string> rawData, IEnumerable<string> marks)
         {
-            var counter = startIndex;
-
-            for (var i = startIndex; i < rawData.Count; i++)
+            foreach (var mark in marks)
             {
-                if (marks.Any(mark => rawData[i].StartsWith(mark)))
+                var index = rawData.IndexOf(rawData.FirstOrDefault(x => x.StartsWith(mark)));
+                if (index != -1)
                 {
-                    return counter;
+                    return --index;
                 }
-
-                counter++;
             }
 
-            return counter;
+            return -1;
         }
 
-        private static string ConcatenateRows(IReadOnlyList<string> rawData, int startIndex, int endIndex)
+        private static int GetEndIndex(IList<string> rawData, IEnumerable<string> marks, int startIndex)
         {
-            var result = string.Empty;
+            foreach (var mark in marks)
+            {
+                for (int i = startIndex; i < rawData.Count; i++)
+                {
+                    if (rawData[i].StartsWith(mark))
+                    {
+                        return i - 1;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        private static string ConcatenateRowsAsText(IReadOnlyList<string> rawData, int startIndex, int endIndex)
+        {
+            var result = new StringBuilder();
+
+            if (startIndex == endIndex)
+            {
+                return rawData[startIndex];
+            }
 
             for (var i = startIndex; i < endIndex; i++)
             {
-                result += rawData[i];
+                result.Append(rawData[i]);
+            }
+
+            return result.ToString();
+        }
+
+        private List<string> GetAttended(string data, string[] splitters)
+        {
+            var result = new List<string>();
+
+            var splitted = data.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var s in splitted)
+            {
+                result.Add(Normalize(s));
             }
 
             return result;
         }
 
-        private static string CleanData(string data, IEnumerable<string> removableItems)
+        private Dictionary<string, string> GetNotAttended(string data, string[] splitters)
         {
-            return removableItems.Aggregate(data, (current, removableItem) => current.Replace(removableItem, string.Empty));
+            var result = new Dictionary<string, string>();
+
+            var splitted = data.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var s in splitted)
+            {
+                var internalSplit = s.Split(_notAttendedInternalSplitOptions, StringSplitOptions.RemoveEmptyEntries);
+
+                if (internalSplit.Count() == 1)
+                {
+                    result.Add(NormalizeNotSplit(internalSplit[0]), "-");
+                }
+                else
+                {
+                    result.Add(NormalizeNotSplit(internalSplit[0]), internalSplit[1]);
+                }
+            }
+
+            return result;
         }
 
-        private static List<string> Split(string data, string[] splitters)
+        public string GetDate(List<string> rawData)
         {
-            return data.Split(splitters, StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (var item in rawData)
+            {
+                if (item.StartsWith("2013") || item.StartsWith("2014") || item.StartsWith("2015") || item.StartsWith("2016"))
+                {
+                    return CleanDate(item);
+                }
+            }
+
+            return string.Empty;
         }
 
-        private static Dictionary<string, string> Split(string data, string[] splitters, string[] internalSplitters)
+        private string CleanDate(string rawDate)
         {
-            return data.Split(splitters, StringSplitOptions.RemoveEmptyEntries)
-                .Select(deputats => deputats.Split(internalSplitters, StringSplitOptions.RemoveEmptyEntries)).ToDictionary(splitted => splitted[0], splitted => splitted[1]);
+            var dateSplitted = rawDate.Split(new[] { ".", "gada", " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            var year = dateSplitted[0];
+            var date = dateSplitted[1];
+            var month = dateSplitted[2];
+
+            switch (month)
+            {
+                case "janvari":
+                    month = "01";
+                    break;
+                case "februari":
+                    month = "02";
+                    break;
+                case "marta":
+                    month = "03";
+                    break;
+                case "aprili":
+                    month = "04";
+                    break;
+                case "maija":
+                    month = "05";
+                    break;
+                case "junija":
+                    month = "06";
+                    break;
+                case "julija":
+                    month = "07";
+                    break;
+                case "augusta":
+                    month = "08";
+                    break;
+                case "septembri":
+                    month = "09";
+                    break;
+                case "oktobri":
+                    month = "10";
+                    break;
+                case "novembri":
+                    month = "11";
+                    break;
+                case "decembri":
+                    month = "12";
+                    break;
+                default:
+                    break;
+            }
+
+            return date + "." + month + "." + year;
+
+        }
+
+        public string Normalize(string s)
+        {
+            var splitted = s.Split(new[] { "(", ")" }, StringSplitOptions.RemoveEmptyEntries);
+            var result = string.Empty;
+
+            if (splitted.Count() > 1)
+            {
+                result = splitted[0].ToLower().Replace("š", "s");
+            }
+            else
+            {
+                result = s.ToLower().Replace("š", "s");
+            }
+
+            return GetCorrectName(result);
+        }
+
+        public string NormalizeNotSplit(string s)
+        {
+            return GetCorrectName(s.ToLower().Replace("š", "s"));
+        }
+
+        public string GetCorrectName(string s)
+        {
+            var correctName = s;
+
+            foreach (var item in _deputati)
+            {
+                if (s.Contains(item.Key))
+                {
+                    correctName = correctName.Replace(item.Key, item.Value);
+                }
+            }
+
+            return correctName;
         }
     }
 }

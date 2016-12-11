@@ -44,11 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cleaner.cs" />
+    <Compile Include="HandlerOptions.cs" />
+    <Compile Include="Handlers\AdaziHandler.cs" />
     <Compile Include="Handlers\GeneralHandler.cs" />
-    <Compile Include="Handlers\JelgavaPilsetaHandler.cs" />
     <Compile Include="Handlers\SalacgrivaHandler.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validator.cs" />
     <Compile Include="Writer.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,23 +18,44 @@ namespace PdfParsing.Results
         }
 
         [TestMethod]
-        public void HandleJelgavasPilseta()
+        public void HandleAdazi()
         {
-            var handler = new JelgavaPilsetaHandler();
-            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Jelgava", "*.pdf", SearchOption.AllDirectories);
+            var handler = new AdaziHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Adazi", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "maris sprindžuks";
+            var deputatuSkaits = 14;
 
             var attended = new List<string>();
             var notAttended = new Dictionary<string, string>();
 
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Adazi\Results\";
+
             foreach (var file in files)
             {
-                var rawData = Reader.ReadTextFromPdf(file);
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
 
-                handler.Handle(rawData, out attended, out notAttended);
+                    handler.Handle(rawData, out attended, out notAttended);
+
+                    var date = handler.GetDate(rawData);
+                    
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        attended,
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch(Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+                
             }
-
-            var date = handler.GetDate();
-            Writer.WriteToFile(@"C:\Work_misc\Protokoli\Jelgava_results.csv", attended, notAttended, date);
+            
         }
     }
 }

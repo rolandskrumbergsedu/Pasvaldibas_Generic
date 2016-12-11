@@ -15,6 +15,11 @@ namespace PdfParsing.Logic.Handlers
         private static readonly string[] AttendedSplitOptions = { ", " };
         private static readonly string[] NotAttendedSplitOptions = { ", ", "; " };
         private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
+        private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
+        {
+            { "", "" },
+            { "", "" }
+        };
 
         public SalacgrivaHandler() : base(AttendedStartIndexMark, 
             AttendedEndIndexMark,
@@ -22,7 +27,8 @@ namespace PdfParsing.Logic.Handlers
             NotAttendedEndIndexMark,
             AttendedSplitOptions,
             NotAttendedSplitOptions,
-            NotAttendedInternalSplitOptions)
+            NotAttendedInternalSplitOptions,
+            Deputati)
         {
             
         }
