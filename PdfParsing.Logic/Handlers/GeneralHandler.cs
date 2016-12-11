@@ -134,7 +134,7 @@ namespace PdfParsing.Logic.Handlers
                 return rawData[startIndex];
             }
 
-            for (var i = startIndex; i < endIndex; i++)
+            for (var i = startIndex; i <= endIndex; i++)
             {
                 result.Append(rawData[i]);
             }

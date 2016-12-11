@@ -57,5 +57,46 @@ namespace PdfParsing.Results
             }
             
         }
+
+        [TestMethod]
+        public void HandleAglona()
+        {
+            var handler = new AglonaHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Aglona", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "helena streike";
+            var deputatuSkaits = 8;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Aglona\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    handler.Handle(rawData, out attended, out notAttended);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
     }
 }
