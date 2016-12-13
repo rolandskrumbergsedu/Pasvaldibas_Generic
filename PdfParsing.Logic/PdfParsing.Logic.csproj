@@ -51,6 +51,7 @@
     <Compile Include="HandlerOptions.cs" />
     <Compile Include="Handlers\AdaziHandler.cs" />
     <Compile Include="Handlers\AglonaHandler.cs" />
+    <Compile Include="Handlers\VilakaHandler.cs" />
     <Compile Include="Handlers\GeneralHandler.cs" />
     <Compile Include="Handlers\SalacgrivaHandler.cs" />
     <Compile Include="PdfConverter.cs" />

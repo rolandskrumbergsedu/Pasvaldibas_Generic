@@ -1,0 +1,93 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PdfParsing.Logic.Handlers
+{
+    public class VilakaHandler : GeneralHandler
+    {
+        private static readonly List<string> AttendedStartIndexMark = new List<string> { "Piedalas –" };
+        private static readonly List<string> AttendedEndIndexMark = new List<string> { "Pašvaldibas administracijas" };
+        private static readonly List<string> NotAttendedStartIndexMark = new List<string> { "Nepiedalas –" };
+        private static readonly List<string> NotAttendedEndIndexMark = new List<string> { "Darba kartiba:" };
+        private static readonly string[] AttendedSplitOptions = { ", ", "," };
+        private static readonly string[] NotAttendedSplitOptions = { ", ", "; ", "," };
+        private static readonly string[] NotAttendedInternalSplitOptions = { "NOTHING" };
+        private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
+        {
+            { "valda buzijana", "Valda Buzijana" },
+            { "leonids cvetkovs", "Leonids Cvetkovs" },
+            { "alberts draviņš", "Alberts Draviņš" },
+            { "jaroslavs kozlovs", "Jaroslavs Kozlovs" },
+            { "andis locmelis", "Andis Ločmelis" },
+            { "uldis matisans", "Uldis Matisāns" },
+            { "aldis puspurs", "Aldis Pušpurs" },
+            { "raimonds slisans", "Raimonds Slišāns" },
+            { "ināra sokirka", "Ināra Sokirka" },
+            { "jeļena suhina", "Jeļena Suhina" },
+            { "sarmīte saicane", "Sarmīte Šaicāne" },
+            { "regīna brokane", "Regīna Brokāne" },
+            { "anita kokorevica", "Anita Kokoreviča" },
+            { "ilze saicane", "Ilze Šaicāne" }
+        };
+
+        public VilakaHandler() : base(
+            AttendedStartIndexMark, 
+            AttendedEndIndexMark,
+            NotAttendedStartIndexMark,
+            NotAttendedEndIndexMark,
+            AttendedSplitOptions,
+            NotAttendedSplitOptions,
+            NotAttendedInternalSplitOptions,
+            Deputati)
+        {
+
+        }
+
+
+        public List<string> CleanAttended(List<string> attended)
+        {
+            //var newAttended = new List<string>();
+
+            //foreach (var item in attended)
+            //{
+            //    var splitted = item.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+            //    if (splitted.Count() > 1)
+            //    {
+            //        newAttended.Add(Normalize(splitted[1]));
+            //    }
+            //    else
+            //    {
+            //        newAttended.Add(Normalize(item));
+            //    }
+            //}
+
+            //return newAttended;
+
+            return attended;
+
+        }
+
+        public Dictionary<string, string> CleanNotAttended(Dictionary<string, string> notAttended)
+        {
+            //var newNotAttended = new Dictionary<string, string>();
+
+            //foreach (var item in notAttended)
+            //{
+            //    var newItem = Normalize(item.Key.Replace("nepiedalas (attaisnotu iemeslu del): ", string.Empty)
+            //            .Replace(".", string.Empty));
+
+            //    newNotAttended.Add(
+            //        item.Key.Replace("nepiedalas (attaisnotu iemeslu del): ", string.Empty)
+            //            .Replace(".", string.Empty),
+            //        item.Value);
+            //}
+
+            //return newNotAttended;
+
+            return notAttended;
+        }
+    }
+}

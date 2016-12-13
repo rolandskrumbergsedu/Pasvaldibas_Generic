@@ -38,7 +38,7 @@ namespace PdfParsing.Results
                 {
                     var rawData = Reader.ReadTextFromPdf(file);
 
-                    handler.Handle(rawData, out attended, out notAttended);
+                    handler.Handle(rawData, out attended, out notAttended, true);
 
                     var date = handler.GetDate(rawData);
                     
@@ -79,7 +79,48 @@ namespace PdfParsing.Results
                 {
                     var rawData = Reader.ReadTextFromPdf(file);
 
-                    handler.Handle(rawData, out attended, out notAttended);
+                    handler.Handle(rawData, out attended, out notAttended, true);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
+
+        [TestMethod]
+        public void HandleVilaka()
+        {
+            var handler = new VilakaHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Vilaka", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "vija gaiduka";
+            var deputatuSkaits = 14;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Vilaka\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    handler.Handle(rawData, out attended, out notAttended, false);
 
                     var date = handler.GetDate(rawData);
 

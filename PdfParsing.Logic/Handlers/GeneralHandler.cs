@@ -47,7 +47,7 @@ namespace PdfParsing.Logic.Handlers
             var startIndex = GetIndex(rawData, _attendedStartIndexMark, true);
 
             // Get attended end index
-            var endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+            var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
             
             var attendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
 
@@ -72,9 +72,43 @@ namespace PdfParsing.Logic.Handlers
 
         }
 
-        public void Handle(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended)
+        public void HandleSplit(List<string> rawData, out List<string> attended,
+            out Dictionary<string, string> notAttended)
         {
-            HandleJoined(rawData, out attended, out notAttended);
+            // Get attended start index
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, true);
+
+            // Get attended end index
+            var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
+
+            attended = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
+
+            // Get attended start index
+            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, true);
+
+            if (startIndex > 0)
+            {
+                // Get attended end index
+                endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+                
+                notAttended = GetNotAttended(rawData, startIndex, endIndex, _notAttendedSplitOptions);
+            }
+            else
+            {
+                notAttended = new Dictionary<string, string>();
+            }
+        }
+
+        public void Handle(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended, bool joined)
+        {
+            if (joined)
+            {
+                HandleJoined(rawData, out attended, out notAttended);
+            }
+            else
+            {
+                HandleSplit(rawData, out attended, out notAttended);
+            }
         }
 
         private static int GetIndex(IList<string> rawData, IEnumerable<string> marks, bool nextLine)
@@ -142,6 +176,27 @@ namespace PdfParsing.Logic.Handlers
             return result.ToString();
         }
 
+        private static List<string> ConcatenateRowsAsLines(IReadOnlyList<string> rawData, int startIndex, int endIndex)
+        {
+            var result = new List<string>();
+
+            if (startIndex == endIndex)
+            {
+                result.Add(rawData[startIndex]);
+                return result;
+            }
+
+            for (var i = startIndex; i <= endIndex; i++)
+            {
+                if (rawData[i].Length > 10)
+                {
+                    result.Add(rawData[i]);
+                }
+            }
+
+            return result;
+        }
+
         private List<string> GetAttended(string data, string[] splitters)
         {
             var result = new List<string>();
@@ -173,6 +228,32 @@ namespace PdfParsing.Logic.Handlers
                 {
                     result.Add(NormalizeNotSplit(internalSplit[0]), internalSplit[1]);
                 }
+            }
+
+            return result;
+        }
+
+        private Dictionary<string, string> GetNotAttended(IReadOnlyList<string> rawData, int startIndex, int endIndex, string[] splitters)
+        {
+            var result = new Dictionary<string, string>();
+
+            for (var i = startIndex; i <= endIndex; i++)
+            {
+                var internalSplit = rawData[i].Split(_notAttendedInternalSplitOptions, StringSplitOptions.RemoveEmptyEntries);
+
+                var toBeAdded = NormalizeNotSplit(internalSplit[0]);
+                if (toBeAdded.Length > 10)
+                {
+                    if (internalSplit.Count() == 1)
+                    {
+                        result.Add(NormalizeNotSplit(internalSplit[0]), "-");
+                    }
+                    else
+                    {
+                        result.Add(NormalizeNotSplit(internalSplit[0]), internalSplit[1]);
+                    }
+                }
+                
             }
 
             return result;
