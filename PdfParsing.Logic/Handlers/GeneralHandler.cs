@@ -44,11 +44,17 @@ namespace PdfParsing.Logic.Handlers
         public void HandleJoined(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended)
         {
             // Get attended start index
-            var startIndex = GetIndex(rawData, _attendedStartIndexMark, true);
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, false);
 
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
-            
+
+            if (endIndex - startIndex > 20)
+            {
+                // Get end index from start index until finding empty row
+                endIndex = GetEndIndex(rawData, startIndex);
+            }
+
             var attendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
 
             attended = GetAttended(attendedList, _attendedSplitOptions);
@@ -60,6 +66,12 @@ namespace PdfParsing.Logic.Handlers
             {
                 // Get attended end index
                 endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+
+                if (endIndex - startIndex > 20)
+                {
+                    // Get end index from start index until finding empty row
+                    endIndex = GetEndIndex(rawData, startIndex);
+                }
 
                 var notAttendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
 
@@ -80,6 +92,12 @@ namespace PdfParsing.Logic.Handlers
 
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
+
+            if (endIndex - startIndex > 20)
+            {
+                // Get end index from start index until finding empty row
+                endIndex = GetEndIndex(rawData, startIndex);
+            }
 
             attended = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
 
@@ -105,9 +123,15 @@ namespace PdfParsing.Logic.Handlers
             }
         }
 
-        public void Handle(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended, bool joined)
+        public void Handle(List<string> rawData, 
+            out List<string> attended, 
+            out Dictionary<string, string> notAttended, 
+            bool attendedSplit,
+            bool notAttendedSplit,
+            bool attendedNextLine,
+            bool notAttendedNextLine)
         {
-            if (joined)
+            if (!attendedSplit)
             {
                 HandleJoined(rawData, out attended, out notAttended);
             }

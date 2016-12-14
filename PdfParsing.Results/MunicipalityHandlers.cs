@@ -38,7 +38,12 @@ namespace PdfParsing.Results
                 {
                     var rawData = Reader.ReadTextFromPdf(file);
 
-                    handler.Handle(rawData, out attended, out notAttended, true);
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
 
                     var date = handler.GetDate(rawData);
                     
@@ -79,7 +84,12 @@ namespace PdfParsing.Results
                 {
                     var rawData = Reader.ReadTextFromPdf(file);
 
-                    handler.Handle(rawData, out attended, out notAttended, true);
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
 
                     var date = handler.GetDate(rawData);
 
@@ -120,7 +130,58 @@ namespace PdfParsing.Results
                 {
                     var rawData = Reader.ReadTextFromPdf(file);
 
-                    handler.Handle(rawData, out attended, out notAttended, false);
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
+
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleViesite()
+        {
+            var handler = new ViesiteHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Viesite", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "janis dimitrijevs";
+            var deputatuSkaits = 8;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Viesite\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
 
                     var date = handler.GetDate(rawData);
 
