@@ -90,7 +90,13 @@ namespace PdfParsing.Logic.Handlers
             {
                 // Get attended end index
                 endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
-                
+
+                if (endIndex - startIndex > 20)
+                {
+                    // Get end index from start index until finding empty row
+                    endIndex = GetEndIndex(rawData, startIndex);
+                }
+
                 notAttended = GetNotAttended(rawData, startIndex, endIndex, _notAttendedSplitOptions);
             }
             else
@@ -137,6 +143,20 @@ namespace PdfParsing.Logic.Handlers
                 if (index != -1)
                 {
                     return --index;
+                }
+            }
+
+            return -1;
+        }
+
+        private static int GetEndIndex(IList<string> rawData, int startIndex)
+        {
+            // Hoping that 30 would be ok
+            for (var i = startIndex; i < 50; i++)
+            {
+                if (rawData[i].Length < 3 || string.IsNullOrWhiteSpace(rawData[i]))
+                {
+                    return i;
                 }
             }
 

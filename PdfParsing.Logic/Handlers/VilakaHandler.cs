@@ -19,16 +19,16 @@ namespace PdfParsing.Logic.Handlers
         {
             { "valda buzijana", "Valda Buzijana" },
             { "leonids cvetkovs", "Leonids Cvetkovs" },
-            { "alberts draviņš", "Alberts Draviņš" },
+            { "alberts dravins", "Alberts Draviņš" },
             { "jaroslavs kozlovs", "Jaroslavs Kozlovs" },
             { "andis locmelis", "Andis Ločmelis" },
             { "uldis matisans", "Uldis Matisāns" },
             { "aldis puspurs", "Aldis Pušpurs" },
             { "raimonds slisans", "Raimonds Slišāns" },
-            { "ināra sokirka", "Ināra Sokirka" },
-            { "jeļena suhina", "Jeļena Suhina" },
-            { "sarmīte saicane", "Sarmīte Šaicāne" },
-            { "regīna brokane", "Regīna Brokāne" },
+            { "inara sokirka", "Ināra Sokirka" },
+            { "jelena suhiha", "Jeļena Suhiha" },
+            { "sarmite saicane", "Sarmīte Šaicāne" },
+            { "regina brokane", "Regīna Brokāne" },
             { "anita kokorevica", "Anita Kokoreviča" },
             { "ilze saicane", "Ilze Šaicāne" }
         };
@@ -49,45 +49,40 @@ namespace PdfParsing.Logic.Handlers
 
         public List<string> CleanAttended(List<string> attended)
         {
-            //var newAttended = new List<string>();
+            var newAttended = new List<string>();
 
-            //foreach (var item in attended)
-            //{
-            //    var splitted = item.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-            //    if (splitted.Count() > 1)
-            //    {
-            //        newAttended.Add(Normalize(splitted[1]));
-            //    }
-            //    else
-            //    {
-            //        newAttended.Add(Normalize(item));
-            //    }
-            //}
+            foreach (var item in attended)
+            {
+                var splitted = item.Split(new[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                if (splitted.Count() > 1)
+                {
+                    newAttended.Add(Normalize(splitted[1]));
+                }
+                else
+                {
+                    newAttended.Add(Normalize(item));
+                }
+            }
 
-            //return newAttended;
-
-            return attended;
+            return newAttended;
 
         }
 
         public Dictionary<string, string> CleanNotAttended(Dictionary<string, string> notAttended)
         {
-            //var newNotAttended = new Dictionary<string, string>();
+            var newNotAttended = new Dictionary<string, string>();
 
-            //foreach (var item in notAttended)
-            //{
-            //    var newItem = Normalize(item.Key.Replace("nepiedalas (attaisnotu iemeslu del): ", string.Empty)
-            //            .Replace(".", string.Empty));
+            foreach (var item in notAttended)
+            {
+                newNotAttended.Add(
+                    item.Key.Replace("nepiedalas (attaisnotu iemeslu del): ", string.Empty)
+                        .Replace(".", string.Empty)
+                        .Replace("deputati:  ", string.Empty)
+                        .Replace("deputati: ", string.Empty),
+                    item.Value);
+            }
 
-            //    newNotAttended.Add(
-            //        item.Key.Replace("nepiedalas (attaisnotu iemeslu del): ", string.Empty)
-            //            .Replace(".", string.Empty),
-            //        item.Value);
-            //}
-
-            //return newNotAttended;
-
-            return notAttended;
+            return newNotAttended;
         }
     }
 }
