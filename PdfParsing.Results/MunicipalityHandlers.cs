@@ -430,5 +430,97 @@ namespace PdfParsing.Results
             }
 
         }
+
+        [TestMethod]
+        public void HandleRucava()
+        {
+            var handler = new RucavaHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Rucava", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "irena susta";
+            var deputatuSkaits = 8;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Rucava\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = true;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
+
+        [TestMethod]
+        public void HandleRauna()
+        {
+            var handler = new RaunaHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Rauna", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "evija zurge";
+            var deputatuSkaits = 8;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Rauna\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    const bool attendedSplit = true;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = false;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
     }
 }

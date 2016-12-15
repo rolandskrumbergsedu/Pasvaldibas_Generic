@@ -7,8 +7,8 @@ namespace PdfParsing.Logic
 {
     public class Writer
     {
-        private Validator _validator;
-        private Cleaner _cleaner;
+        private readonly Validator _validator;
+        private readonly Cleaner _cleaner;
 
         public Writer(Validator validator, Cleaner cleaner)
         {
@@ -31,14 +31,21 @@ namespace PdfParsing.Logic
                 badCsv.Append(Environment.NewLine);
                 foreach (var deputats in attending)
                 {
-                    badCsv.Append($"{deputats.Trim()},{date.Trim()},1,-");
-                    badCsv.Append(Environment.NewLine);
+                    if (!string.IsNullOrEmpty(deputats))
+                    {
+                        badCsv.Append($"{deputats.Trim()},{date.Trim()},1,-");
+                        badCsv.Append(Environment.NewLine);
+                    }
+                    
                 }
 
                 foreach (var deputats in notAttending)
                 {
-                    badCsv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
-                    badCsv.Append(Environment.NewLine);
+                    if (!string.IsNullOrEmpty(deputats.Key))
+                    {
+                        badCsv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
+                        badCsv.Append(Environment.NewLine);
+                    }
                 }
             }
             else
@@ -49,13 +56,19 @@ namespace PdfParsing.Logic
                 {
                     if (_validator.IsValid(_cleaner.CleanAttending(deputats)))
                     {
-                        goodCsv.Append($"{deputats.Trim()},{date.Trim()},1,-");
-                        goodCsv.Append(Environment.NewLine);
+                        if (!string.IsNullOrEmpty(deputats))
+                        {
+                            goodCsv.Append($"{deputats.Trim()},{date.Trim()},1,-");
+                            goodCsv.Append(Environment.NewLine);
+                        }
                     }
                     else
                     {
-                        badCsv.Append($"{deputats.Trim()},{date.Trim()},1,-");
-                        badCsv.Append(Environment.NewLine);
+                        if (!string.IsNullOrEmpty(deputats))
+                        {
+                            badCsv.Append($"{deputats.Trim()},{date.Trim()},1,-");
+                            badCsv.Append(Environment.NewLine);
+                        }
                     }
 
                 }
@@ -64,13 +77,19 @@ namespace PdfParsing.Logic
                 {
                     if (_validator.IsValidNotAttending(_cleaner.CleanNotAttending(deputats)))
                     {
-                        goodCsv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
-                        goodCsv.Append(Environment.NewLine);
+                        if (!string.IsNullOrEmpty(deputats.Key))
+                        {
+                            goodCsv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
+                            goodCsv.Append(Environment.NewLine);
+                        }
                     }
                     else
                     {
-                        badCsv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
-                        badCsv.Append(Environment.NewLine);
+                        if (!string.IsNullOrEmpty(deputats.Key))
+                        {
+                            badCsv.Append($"{deputats.Key.Trim()},{date.Trim()},0,{deputats.Value.Trim()}");
+                            badCsv.Append(Environment.NewLine);
+                        }
                     }
 
                 }
