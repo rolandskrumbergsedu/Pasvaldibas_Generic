@@ -179,7 +179,7 @@ namespace PdfParsing.Results
                     const bool attendedSplit = false;
                     const bool notAttendedSplit = true;
                     const bool attendedNextLine = false;
-                    const bool notAttendedNextLine = true;
+                    const bool notAttendedNextLine = false;
 
                     handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
 

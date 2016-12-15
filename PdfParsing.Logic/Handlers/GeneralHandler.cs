@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Asn1;
 
 namespace PdfParsing.Logic.Handlers
 {
@@ -41,15 +40,91 @@ namespace PdfParsing.Logic.Handlers
             _deputati = deputati;
         }
 
-        public void HandleJoined(List<string> rawData, out List<string> attended, out Dictionary<string, string> notAttended)
+        public void Handle(List<string> rawData, 
+            out List<string> attended, 
+            out Dictionary<string, string> notAttended, 
+            bool attendedSplit,
+            bool notAttendedSplit,
+            bool attendedNextLine,
+            bool notAttendedNextLine)
+        {
+            if (attendedSplit && notAttendedSplit)
+            {
+                HandleAttendedSplitNotAttendedSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
+            }
+
+            if (!attendedSplit && notAttendedSplit)
+            {
+                HandleAttendedNotSplitNotAttendedSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
+            }
+
+            if (attendedSplit && !notAttendedSplit)
+            {
+                HandleAttendedSplitNotAttendedNotSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
+            }
+            else
+            {
+                HandleAttendedNotSplitNotAttendedNotSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
+            }
+        }
+
+        public void HandleAttendedSplitNotAttendedSplit(List<string> rawData, 
+            out List<string> attended, 
+            out Dictionary<string, string> notAttended, 
+            bool attendedNextLine, 
+            bool notAttendedNextLine)
         {
             // Get attended start index
-            var startIndex = GetIndex(rawData, _attendedStartIndexMark, false);
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
 
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
 
-            if (endIndex - startIndex > 20)
+            if ((endIndex - startIndex > 20) || (endIndex == -1))
+            {
+                // Get end index from start index until finding empty row
+                endIndex = GetEndIndex(rawData, startIndex);
+            }
+
+            attended = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
+
+            // Get not attended start index
+            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, notAttendedNextLine);
+
+            if (startIndex > 0)
+            {
+                // Get attended end index
+                endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+
+                if ((endIndex - startIndex > 20) || (endIndex == -1))
+                {
+                    // Get end index from start index until finding empty row
+                    endIndex = GetEndIndex(rawData, startIndex);
+                }
+
+                var notAttendedList = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
+
+                notAttended = GetNotAttended(notAttendedList);
+            }
+            else
+            {
+                notAttended = new Dictionary<string, string>();
+            }
+        }
+
+        public void HandleAttendedNotSplitNotAttendedSplit(List<string> rawData,
+            out List<string> attended,
+            out Dictionary<string, string> notAttended,
+            bool attendedNextLine,
+            bool notAttendedNextLine)
+        {
+            // Get attended start index
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
+
+            // Get attended end index
+            var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
+
+            if ((endIndex - startIndex > 20) || (endIndex == -1))
             {
                 // Get end index from start index until finding empty row
                 endIndex = GetEndIndex(rawData, startIndex);
@@ -59,15 +134,59 @@ namespace PdfParsing.Logic.Handlers
 
             attended = GetAttended(attendedList, _attendedSplitOptions);
 
-            // Get attended start index
-            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, false);
+            // Get not attended start index
+            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, notAttendedNextLine);
 
             if (startIndex > 0)
             {
                 // Get attended end index
                 endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
 
-                if (endIndex - startIndex > 20)
+                if ((endIndex - startIndex > 20) || (endIndex == -1))
+                {
+                    // Get end index from start index until finding empty row
+                    endIndex = GetEndIndex(rawData, startIndex);
+                }
+
+                var notAttendedList = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
+
+                notAttended = GetNotAttended(notAttendedList);
+            }
+            else
+            {
+                notAttended = new Dictionary<string, string>();
+            }
+        }
+
+        public void HandleAttendedSplitNotAttendedNotSplit(List<string> rawData,
+            out List<string> attended,
+            out Dictionary<string, string> notAttended,
+            bool attendedNextLine,
+            bool notAttendedNextLine)
+        {
+            // Get attended start index
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
+
+            // Get attended end index
+            var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
+
+            if ((endIndex - startIndex > 20) || (endIndex == -1))
+            {
+                // Get end index from start index until finding empty row
+                endIndex = GetEndIndex(rawData, startIndex);
+            }
+
+            attended = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
+
+            // Get not attended start index
+            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, notAttendedNextLine);
+
+            if (startIndex > 0)
+            {
+                // Get attended end index
+                endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
+
+                if ((endIndex - startIndex > 20) || (endIndex == -1))
                 {
                     // Get end index from start index until finding empty row
                     endIndex = GetEndIndex(rawData, startIndex);
@@ -81,63 +200,51 @@ namespace PdfParsing.Logic.Handlers
             {
                 notAttended = new Dictionary<string, string>();
             }
-
         }
 
-        public void HandleSplit(List<string> rawData, out List<string> attended,
-            out Dictionary<string, string> notAttended)
+        public void HandleAttendedNotSplitNotAttendedNotSplit(List<string> rawData,
+            out List<string> attended,
+            out Dictionary<string, string> notAttended,
+            bool attendedNextLine,
+            bool notAttendedNextLine)
         {
             // Get attended start index
-            var startIndex = GetIndex(rawData, _attendedStartIndexMark, true);
+            var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
 
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
 
-            if (endIndex - startIndex > 20)
+            if ((endIndex - startIndex > 20) || (endIndex == -1))
             {
                 // Get end index from start index until finding empty row
                 endIndex = GetEndIndex(rawData, startIndex);
             }
 
-            attended = ConcatenateRowsAsLines(rawData, startIndex, endIndex);
+            var attendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
 
-            // Get attended start index
-            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, true);
+            attended = GetAttended(attendedList, _attendedSplitOptions);
+
+            // Get not attended start index
+            startIndex = GetIndex(rawData, _notAttendedStartIndexMark, notAttendedNextLine);
 
             if (startIndex > 0)
             {
                 // Get attended end index
                 endIndex = GetEndIndex(rawData, _notAttendedEndIndexMark);
 
-                if (endIndex - startIndex > 20)
+                if ((endIndex - startIndex > 20) || (endIndex == -1))
                 {
                     // Get end index from start index until finding empty row
                     endIndex = GetEndIndex(rawData, startIndex);
                 }
 
-                notAttended = GetNotAttended(rawData, startIndex, endIndex, _notAttendedSplitOptions);
+                var notAttendedList = ConcatenateRowsAsText(rawData, startIndex, endIndex);
+
+                notAttended = GetNotAttended(notAttendedList, _notAttendedSplitOptions);
             }
             else
             {
                 notAttended = new Dictionary<string, string>();
-            }
-        }
-
-        public void Handle(List<string> rawData, 
-            out List<string> attended, 
-            out Dictionary<string, string> notAttended, 
-            bool attendedSplit,
-            bool notAttendedSplit,
-            bool attendedNextLine,
-            bool notAttendedNextLine)
-        {
-            if (!attendedSplit)
-            {
-                HandleJoined(rawData, out attended, out notAttended);
-            }
-            else
-            {
-                HandleSplit(rawData, out attended, out notAttended);
             }
         }
 
@@ -277,7 +384,7 @@ namespace PdfParsing.Logic.Handlers
             return result;
         }
 
-        private Dictionary<string, string> GetNotAttended(IReadOnlyList<string> rawData, int startIndex, int endIndex, string[] splitters)
+        private Dictionary<string, string> GetNotAttended(IReadOnlyList<string> rawData, int startIndex, int endIndex)
         {
             var result = new Dictionary<string, string>();
 
@@ -298,6 +405,31 @@ namespace PdfParsing.Logic.Handlers
                     }
                 }
                 
+            }
+
+            return result;
+        }
+
+        private Dictionary<string, string> GetNotAttended(IReadOnlyList<string> data)
+        {
+            var result = new Dictionary<string, string>();
+
+            foreach (var record in data)
+            {
+                var internalSplit = record.Split(_notAttendedInternalSplitOptions, StringSplitOptions.RemoveEmptyEntries);
+
+                var toBeAdded = NormalizeNotSplit(internalSplit[0]);
+                if (toBeAdded.Length > 10)
+                {
+                    if (internalSplit.Count() == 1)
+                    {
+                        result.Add(NormalizeNotSplit(internalSplit[0]), "-");
+                    }
+                    else
+                    {
+                        result.Add(NormalizeNotSplit(internalSplit[0]), internalSplit[1]);
+                    }
+                }
             }
 
             return result;
