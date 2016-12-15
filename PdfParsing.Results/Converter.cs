@@ -15,7 +15,7 @@ namespace PdfParsing.Results
         [TestMethod]
         public void ConvertFiles()
         {
-            PdfConverter.Convert(@"C:\Work_misc\Protokoli\Aizpute");
+            PdfConverter.Convert(@"C:\Work_misc\Protokoli\Tukums");
         }
     }
 }

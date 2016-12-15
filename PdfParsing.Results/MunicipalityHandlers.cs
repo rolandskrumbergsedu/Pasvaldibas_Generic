@@ -246,5 +246,51 @@ namespace PdfParsing.Results
             }
 
         }
+
+        [TestMethod]
+        public void HandleTukums()
+        {
+            var handler = new TukumsHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Tukums", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "juris sulcs";
+            var deputatuSkaits = 16;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Tukums\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = false;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = false;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
     }
 }

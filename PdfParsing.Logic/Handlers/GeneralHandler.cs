@@ -529,14 +529,28 @@ namespace PdfParsing.Logic.Handlers
 
             if (splitted.Count() > 1)
             {
-                result = splitted[0].ToLower().Replace("š", "s");
+                result = ReplaceAll(splitted[0].ToLower());
             }
             else
             {
-                result = s.ToLower().Replace("š", "s");
+                result = ReplaceAll(s.ToLower());
             }
 
             return GetCorrectName(result);
+        }
+
+        public string ReplaceAll(string s)
+        {
+            return s.Replace("ā", "a")
+                .Replace("č", "c")
+                .Replace("ē", "e")
+                .Replace("ū", "u")
+                .Replace("ī", "i")
+                .Replace("š", "s")
+                .Replace("ķ", "k")
+                .Replace("ļ", "l")
+                .Replace("ž", "z")
+                .Replace("ņ", "n");
         }
 
         public string NormalizeNotSplit(string s)

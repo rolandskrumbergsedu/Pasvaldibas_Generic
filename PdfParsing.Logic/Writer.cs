@@ -43,6 +43,8 @@ namespace PdfParsing.Logic
             }
             else
             {
+                goodCsv.Append(file);
+                goodCsv.Append(Environment.NewLine);
                 foreach (var deputats in attending)
                 {
                     if (_validator.IsValid(_cleaner.CleanAttending(deputats)))
