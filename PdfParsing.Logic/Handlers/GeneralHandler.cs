@@ -477,40 +477,51 @@ namespace PdfParsing.Logic.Handlers
 
             switch (month)
             {
+                case "janvara":
                 case "janvari":
                     month = "01";
                     break;
+                case "februara":
                 case "februari":
                     month = "02";
                     break;
                 case "marta":
+                case "marts":
                     month = "03";
                     break;
+                case "aprila":
                 case "aprili":
                     month = "04";
                     break;
                 case "maija":
+                case "maijs":
                     month = "05";
                     break;
                 case "junijs":
                 case "junija":
                     month = "06";
                     break;
+                case "julijs":
                 case "julija":
                     month = "07";
                     break;
+                case "augusts":
                 case "augusta":
                     month = "08";
                     break;
+                case "septembris":
                 case "septembri":
                     month = "09";
                     break;
+                case "oktobris":
                 case "oktobri":
                     month = "10";
                     break;
+                case "novembris":
                 case "novembri":
                     month = "11";
                     break;
+                case "decembris":
                 case "decembri":
                     month = "12";
                     break;
