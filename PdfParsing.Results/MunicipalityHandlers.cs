@@ -384,5 +384,51 @@ namespace PdfParsing.Results
             }
 
         }
+
+        [TestMethod]
+        public void HandleSkriveri()
+        {
+            var handler = new SkriveriHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Skriveri", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "andris zalitis";
+            var deputatuSkaits = 8;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Skriveri\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    const bool attendedSplit = false;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = true;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
     }
 }

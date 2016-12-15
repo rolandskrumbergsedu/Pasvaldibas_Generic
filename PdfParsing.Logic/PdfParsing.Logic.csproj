@@ -51,6 +51,7 @@
     <Compile Include="HandlerOptions.cs" />
     <Compile Include="Handlers\AdaziHandler.cs" />
     <Compile Include="Handlers\AglonaHandler.cs" />
+    <Compile Include="Handlers\SkriveriHandler.cs" />
     <Compile Include="Handlers\SkrundaHandler.cs" />
     <Compile Include="Handlers\TerveteHandler.cs" />
     <Compile Include="Handlers\TukumsHandler.cs" />
