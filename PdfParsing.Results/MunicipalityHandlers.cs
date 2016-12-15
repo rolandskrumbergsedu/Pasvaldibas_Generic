@@ -338,5 +338,51 @@ namespace PdfParsing.Results
             }
 
         }
+
+        [TestMethod]
+        public void HandleSkrunda()
+        {
+            var handler = new SkrundaHandler();
+            var files = Directory.GetFiles(@"C:\Work_misc\Protokoli\Skrunda", "*.pdf", SearchOption.AllDirectories);
+
+            var prieksedetajs = "loreta robezniece";
+            var deputatuSkaits = 14;
+
+            var attended = new List<string>();
+            var notAttended = new Dictionary<string, string>();
+
+            var writer = new Writer(new Validator(deputatuSkaits, prieksedetajs), new Cleaner());
+            var baseFile = @"C:\Work_misc\Protokoli\Skrunda\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    const bool attendedSplit = true;
+                    const bool notAttendedSplit = true;
+                    const bool attendedNextLine = false;
+                    const bool notAttendedNextLine = true;
+
+                    handler.Handle(rawData, out attended, out notAttended, attendedSplit, notAttendedSplit, attendedNextLine, notAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
     }
 }

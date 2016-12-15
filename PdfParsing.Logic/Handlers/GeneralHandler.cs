@@ -51,13 +51,11 @@ namespace PdfParsing.Logic.Handlers
             {
                 HandleAttendedSplitNotAttendedSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
             }
-
-            if (!attendedSplit && notAttendedSplit)
+            else if (!attendedSplit && notAttendedSplit)
             {
                 HandleAttendedNotSplitNotAttendedSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
             }
-
-            if (attendedSplit && !notAttendedSplit)
+            else if (attendedSplit && !notAttendedSplit)
             {
                 HandleAttendedSplitNotAttendedNotSplit(rawData, out attended, out notAttended, attendedNextLine, notAttendedNextLine);
             }
@@ -458,7 +456,7 @@ namespace PdfParsing.Logic.Handlers
         {
             foreach (var item in rawData)
             {
-                if (item.StartsWith("2013") || item.StartsWith("2014") || item.StartsWith("2015") || item.StartsWith("2016"))
+                if (item.Contains("2013.") || item.Contains("2014.") || item.Contains("2015.") || item.Contains("2016."))
                 {
                     return CleanDate(item);
                 }
@@ -471,9 +469,38 @@ namespace PdfParsing.Logic.Handlers
         {
             var dateSplitted = rawDate.Split(new[] { ".", "gada", " " }, StringSplitOptions.RemoveEmptyEntries);
 
-            var year = dateSplitted[0];
-            var date = dateSplitted[1];
-            var month = dateSplitted[2];
+            var yearIndex = 0;
+            var year = string.Empty;
+
+            for (var j = 0; j < dateSplitted.Length; j++)
+            {
+                if (dateSplitted[j].Contains("2013"))
+                {
+                    year = "2013";
+                    yearIndex = j;
+                }
+
+                if (dateSplitted[j].Contains("2014"))
+                {
+                    year = "2014";
+                    yearIndex = j;
+                }
+
+                if (dateSplitted[j].Contains("2015"))
+                {
+                    year = "2015";
+                    yearIndex = j;
+                }
+
+                if (dateSplitted[j].Contains("2016"))
+                {
+                    year = "2016";
+                    yearIndex = j;
+                }
+            }
+            
+            var date = dateSplitted[yearIndex+1];
+            var month = dateSplitted[yearIndex+2];
 
             switch (month)
             {
