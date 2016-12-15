@@ -51,6 +51,7 @@
     <Compile Include="HandlerOptions.cs" />
     <Compile Include="Handlers\AdaziHandler.cs" />
     <Compile Include="Handlers\AglonaHandler.cs" />
+    <Compile Include="Handlers\PlavinasHandler.cs" />
     <Compile Include="Handlers\PriekuliHandler.cs" />
     <Compile Include="Handlers\RaunaHandler.cs" />
     <Compile Include="Handlers\RucavaHandler.cs" />

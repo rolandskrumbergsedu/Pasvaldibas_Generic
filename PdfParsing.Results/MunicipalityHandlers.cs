@@ -570,5 +570,52 @@ namespace PdfParsing.Results
             }
 
         }
+
+        [TestMethod]
+        public void HandlePlavinas()
+        {
+            var handler = new PlavinasHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+
+        }
     }
 }
