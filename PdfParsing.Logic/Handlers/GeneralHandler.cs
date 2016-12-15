@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PdfParsing.Logic.Handlers
 {
@@ -77,6 +76,11 @@ namespace PdfParsing.Logic.Handlers
             // Get attended start index
             var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
 
+            if (startIndex == -1)
+            {
+                throw new ApplicationException("Could not find start for attended!");
+            }
+
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
 
@@ -120,6 +124,11 @@ namespace PdfParsing.Logic.Handlers
         {
             // Get attended start index
             var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
+
+            if (startIndex == -1)
+            {
+                throw new ApplicationException("Could not find start for attended!");
+            }
 
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
@@ -167,6 +176,11 @@ namespace PdfParsing.Logic.Handlers
             // Get attended start index
             var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
 
+            if (startIndex == -1)
+            {
+                throw new ApplicationException("Could not find start for attended!");
+            }
+
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
 
@@ -210,6 +224,11 @@ namespace PdfParsing.Logic.Handlers
         {
             // Get attended start index
             var startIndex = GetIndex(rawData, _attendedStartIndexMark, attendedNextLine);
+
+            if (startIndex == -1)
+            {
+                throw new ApplicationException("Could not find start for attended!");
+            }
 
             // Get attended end index
             var endIndex = GetEndIndex(rawData, _attendedEndIndexMark);
@@ -473,6 +492,7 @@ namespace PdfParsing.Logic.Handlers
                 case "maija":
                     month = "05";
                     break;
+                case "junijs":
                 case "junija":
                     month = "06";
                     break;
@@ -530,6 +550,11 @@ namespace PdfParsing.Logic.Handlers
 
             foreach (var item in _deputati)
             {
+                if (string.IsNullOrEmpty(item.Key) || string.IsNullOrEmpty(item.Value))
+                {
+                    throw new ApplicationException("Deputatu saraksts satur tuksus ierakstus!");
+                }
+
                 if (s.Contains(item.Key))
                 {
                     correctName = correctName.Replace(item.Key, item.Value);
