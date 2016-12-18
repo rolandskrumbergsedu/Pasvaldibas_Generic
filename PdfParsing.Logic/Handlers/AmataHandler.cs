@@ -6,17 +6,20 @@ using System.Threading.Tasks;
 
 namespace PdfParsing.Logic.Handlers
 {
-    public class PavilostaHandler : GeneralHandler
+    public class AmataHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            //"Sede piedalas",
+            "Sede piedalas",
+            " Sede piedalas",
+            "  Sede piedalas",
             //"Deputati",
             //"Ieradusies",
             //"Ieradušies",
             //"Domes deputati",
-            "Pavilostas novada domes deputati",
-            "Piedalas",
+            //"Pavilostas novada domes deputati",
+            "Piedalas deputati",
+            //"Piedalas",
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
@@ -24,13 +27,15 @@ namespace PdfParsing.Logic.Handlers
             //"Domes darbinieki",
             //"Pasvaldibas darbinieki",
             //"Pašvaldibas darbinieki",
-            "Pašvaldibas dar",
-            "Nepiedalas",
+            "Amatas novada pašvaldibas izpilddirektors",
+            "Nepiedalas deputati",
+            //"Nepiedalas",
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "Sede nepiedalas",
-            "Nepiedalas",
+            //"Sede nepiedalas",
+            //"Nepiedalas",
+            "Nepiedalas deputati",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
@@ -40,21 +45,29 @@ namespace PdfParsing.Logic.Handlers
         };
         private static readonly string[] AttendedSplitOptions = { ", ", "," };
         private static readonly string[] NotAttendedSplitOptions = { ", ", "; ", "," };
-        private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
+        //private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
+        private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
         private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
         {
-            { "aldis barsukovs", "Aldis Barsukovs" },
-            { "gatis bredikis", "Gatis Brēdiķis" },
-            { "arta bunka", "Arta Bunka" },
-            { "eriks erleckis", "Ēriks Erleckis" },
-            { "janis vitrups", "Jānis Vitrups" },
-            { "andris zalkalns", "Andris Zaļkalns" },
-            { "vita cielava", "Vita Cielava" },
-            { "gints juriks", "Gints Juriks" },
-            { "dace berzniece", "Dace Bērzniece," }
+            //{ "", "" },
+            { "andris jansons", "Andris Jansons" },
+            { "ingrida lace", "Ingrīda Lāce" },
+            { "inese varekoja", "Inese Varekoja" },
+            { "sarmite sviderska", "Sarmīte Sviderska" },
+            { "modris veitners", "Modris Veitners" },
+            { "solvita krastina", "Solvita Krastiņa" },
+            { "olita elmere", "Olita Elmere" },
+            { "aris kazerovskis", "Āris Kazerovskis" },
+            { "arnis lemesonoks", "Arnis Lemešonoks" },
+            { "peteris grugulis", "Pēteris Grugulis" },
+            { "guna kalnina priede", "Guna Kalniņa Priede" },
+            { "janis karklins", "Jānis Kārkliņš" },
+            { "peteris ontuzans", "Pēteris Ontužāns" },
+            { "peteris ontužans", "Pēteris Ontužāns" },
+            { "valdis lacis", "Valdis Lācis" },
         };
 
-        public PavilostaHandler() : base(
+        public AmataHandler() : base(
             AttendedStartIndexMark, 
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
@@ -67,13 +80,13 @@ namespace PdfParsing.Logic.Handlers
 
         }
 
-        public string Name => "Pavilosta";
-        public string Prieksedetajs => "uldis kristapsons";
-        public int DeputatuSkaits => 8;
+        public string Name => "Amata";
+        public string Prieksedetajs => "elita eglite";
+        public int DeputatuSkaits => 14;
         public bool AttendedSplit => false;
-        public bool NotAttendedSplit => true;
-        public bool AttendedNextLine => true;
-        public bool NotAttendedNextLine => true;
+        public bool NotAttendedSplit => false;
+        public bool AttendedNextLine => false;
+        public bool NotAttendedNextLine => false;
 
         public List<string> CleanAttended(List<string> attended, string prieksedetajs)
         {
@@ -122,7 +135,7 @@ namespace PdfParsing.Logic.Handlers
 
         private static string ReplaceNotAttended(string s)
         {
-            return s.Replace("domes priekssedetaja", string.Empty)
+            return s.Replace("nepiedalas : ", string.Empty)
                         .Replace("priekssedetajas vietnieks", string.Empty)
                         .Replace("priekssedetajas vietnieki", string.Empty)
                         .Replace("Deputati", string.Empty)
