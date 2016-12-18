@@ -95,6 +95,8 @@ namespace PdfParsing.Logic
                 }
             }
 
+            CheckIfExists(filePath);
+
             //after your loop
             File.AppendAllText(filePath + "good.csv", goodCsv.ToString());
             File.AppendAllText(filePath + "bad.csv", badCsv.ToString());
@@ -104,6 +106,8 @@ namespace PdfParsing.Logic
         {
             var fileToWrite = filePath + "errors.txt";
 
+            CheckIfExists(filePath);
+
             File.AppendAllText(fileToWrite, file);
             File.AppendAllText(fileToWrite, Environment.NewLine);
             File.AppendAllText(fileToWrite, ex.Message);
@@ -111,6 +115,14 @@ namespace PdfParsing.Logic
             File.AppendAllText(fileToWrite, ex.StackTrace);
             File.AppendAllText(fileToWrite, Environment.NewLine);
             File.AppendAllText(fileToWrite, Environment.NewLine);
+        }
+
+        private void CheckIfExists(string filePath)
+        {
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
         }
     }
 }
