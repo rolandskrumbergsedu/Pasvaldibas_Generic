@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PdfParsing.Logic;
 
 namespace PdfParsing.Results
@@ -15,7 +12,7 @@ namespace PdfParsing.Results
         [TestMethod]
         public void ConvertFiles()
         {
-            PdfConverter.Convert(@"C:\Work_misc\Protokoli\Akniste\word");
+            PdfConverter.Convert(@"C:\Work_misc\Protokoli");
         }
     }
 }

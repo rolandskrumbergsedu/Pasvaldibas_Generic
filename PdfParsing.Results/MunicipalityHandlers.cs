@@ -711,5 +711,1109 @@ namespace PdfParsing.Results
             }
         }
 
+        [TestMethod]
+        public void HandleAuce()
+        {
+            var handler = new AuceHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+
+        [TestMethod]
+        public void HandleBauska()
+        {
+            var handler = new BauskaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleBeverina()
+        {
+            var handler = new BeverinaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleBroceni()
+        {
+            var handler = new BroceniHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleBurtnieki()
+        {
+            var handler = new BurtniekiHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleCarnikava()
+        {
+            var handler = new CarnikavaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleCesis()
+        {
+            var handler = new CesisHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleCibla()
+        {
+            var handler = new CiblaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleDagda()
+        {
+            var handler = new DagdaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleDobele()
+        {
+            var handler = new DobeleHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleDundaga()
+        {
+            var handler = new DundagaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleGrobinas()
+        {
+            var handler = new GrobinasHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleIecava()
+        {
+            var handler = new IecavaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleEngure()
+        {
+            var handler = new EngureHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleGulbene()
+        {
+            var handler = new GulbeneHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleIncukalns()
+        {
+            var handler = new IncukalnsHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleJaunjelgava()
+        {
+            var handler = new JaunjelgavaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleJaunpils()
+        {
+            var handler = new JaunpilsHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleJekabpils()
+        {
+            var handler = new JekabpilsHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleKandava()
+        {
+            var handler = new KandavaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleKarsava()
+        {
+            var handler = new KarsavaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleKegums()
+        {
+            var handler = new KegumsHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleKoknese()
+        {
+            var handler = new KokneseHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
+
+        [TestMethod]
+        public void HandleKraslava()
+        {
+            var handler = new KraslavaHandler();
+
+            var baseAddress = @"C:\Work_misc\Protokoli\" + handler.Name;
+
+            var files = Directory.GetFiles(baseAddress, "*.pdf", SearchOption.AllDirectories);
+
+            var writer = new Writer(new Validator(handler.DeputatuSkaits, handler.Prieksedetajs), new Cleaner());
+
+            var baseFile = baseAddress + @"\Results\";
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var rawData = Reader.ReadTextFromPdf(file);
+
+                    List<string> attended;
+                    Dictionary<string, string> notAttended;
+                    handler.Handle(rawData,
+                        out attended,
+                        out notAttended,
+                        handler.AttendedSplit,
+                        handler.NotAttendedSplit,
+                        handler.AttendedNextLine,
+                        handler.NotAttendedNextLine);
+
+                    var date = handler.GetDate(rawData);
+
+                    writer.WriteToFile(
+                        file,
+                        baseFile,
+                        handler.CleanAttended(attended, handler.Prieksedetajs),
+                        handler.CleanNotAttended(notAttended),
+                        date);
+                }
+                catch (Exception ex)
+                {
+                    writer.WriteError(file, baseFile, ex);
+                }
+
+            }
+        }
     }
 }

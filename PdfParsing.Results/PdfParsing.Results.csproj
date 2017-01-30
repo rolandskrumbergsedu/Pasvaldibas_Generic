@@ -53,6 +53,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Converter.cs" />
+    <Compile Include="JaunpilsHandler.cs" />
+    <Compile Include="JekabpilsHandler.cs" />
+    <Compile Include="KandavaHandler.cs" />
+    <Compile Include="KarsavaHandler.cs" />
+    <Compile Include="KegumsHandler.cs" />
+    <Compile Include="KokneseHandler.cs" />
+    <Compile Include="KraslavaHandler.cs" />
     <Compile Include="MunicipalityHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
