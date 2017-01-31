@@ -4,23 +4,20 @@ using PdfParsing.Logic.Handlers;
 
 namespace PdfParsing.Results
 {
-    public class KandavaHandler : GeneralHandler
+    public class SaulkrastiHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            "Sēdē piedalās",
-            "Sede piedalas"
+            ""
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
-            "Sēdē nepiedalās",
-            "Sede nepiedalas",
+            "",
             "NOTHING"
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "Sēdē nepiedalās",
-            "Sede nepiedalas",
+            "",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
@@ -34,38 +31,11 @@ namespace PdfParsing.Results
         private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
         {
             //{ "", "" },
-            { "g.birkensteins", " Gints Birkenšteins " },
-            { "s.ezerina", "Signe Ezeriņa" },
-            { "r.fabjanciks", "Romeks Fabjančiks" },
-            { "l.gudakovska", "Leonārija Gudakovska" },
-            { "g.indriksons", "Guntars Indriksons" },
-            { "a.kiegelis", "Alfreds Ķieģelis" },
-            { "i.lasis", "Ivars Lasis" },
-            { "a.petrevica", "Aksilda Petrevica" },
-            { "d.rozenfelds", "Dainis Rozenfelds" },
-            { "s.tiltina", "Silvija Tiltiņa" },
-            { "v.v.dreimanis", "Viesturs Valdis Dreimanis" },
-            { "i.ozols", "Ivars Ozols " },
-            { "i.priede", "Inga Priede" },
-            { "s.zvirgzdina", "Solvita Zvirgzdiņa" },
-            { "gints birkensteins", " Gints Birkenšteins " },
-            { "signe ezerina", "Signe Ezeriņa" },
-            { "romeks fabjanciks", "Romeks Fabjančiks" },
-            { "leonarija gudakovska", "Leonārija Gudakovska" },
-            { "guntars indriksons", "Guntars Indriksons" },
-            { "alfreds kiegelis", "Alfreds Ķieģelis" },
-            { "ivars lasis", "Ivars Lasis" },
-            { "aksilda petrevica", "Aksilda Petrevica" },
-            { "dainis rozenfelds", "Dainis Rozenfelds" },
-            { "silvija tiltina", "Silvija Tiltiņa" },
-            { "viesturs valdis dreimanis", "Viesturs Valdis Dreimanis" },
-            { "ivars ozols", "Ivars Ozols " },
-            { "inga priede", "Inga Priede" },
-            { "solvita zvirgzdina", "Solvita Zvirgzdiņa" }
+            { "vitalijs aispurs", "Vitālijs Aišpurs" },
         };
 
-        public KandavaHandler() : base(
-            AttendedStartIndexMark, 
+        public SaulkrastiHandler() : base(
+            AttendedStartIndexMark,
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
             NotAttendedEndIndexMark,
@@ -77,12 +47,12 @@ namespace PdfParsing.Results
 
         }
 
-        public string Name => "Kandava";
-        public string Prieksedetajs => "n.stoferts";
+        public string Name => "Kraslava";
+        public string Prieksedetajs => "gunars upenieks";
         public int DeputatuSkaits => 14;
         public bool AttendedSplit => false;
-        public bool NotAttendedSplit => true;
-        public bool AttendedNextLine => false;
+        public bool NotAttendedSplit => false;
+        public bool AttendedNextLine => true;
         public bool NotAttendedNextLine => false;
 
         public List<string> CleanAttended(List<string> attended, string prieksedetajs)

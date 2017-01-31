@@ -4,78 +4,38 @@ using PdfParsing.Logic.Handlers;
 
 namespace PdfParsing.Results
 {
-    public class JekabpilsHandler : GeneralHandler
+    public class SalaspilsHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            "Piedalās",
-            "Piedalas",
-            "Sēdē piedalījās",
-            "Sede piedalijas"
+            ""
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
-            "Nepiedalās",
-            "Nepiedalas",
-            "Sēdē attaisnojošu",
-            "Sede attaisnojošu",
+            "",
             "NOTHING"
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "Nepiedalās",
-            "Nepiedalas",
-            "Sēdē attaisnojošu",
-            "Sede attaisnojošu"
+            "",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
-            "Sēdē piedalās",
-            "Sede piedalas",
-            "Sēdē piedalījās amatpersonas",
-            "Sede piedalijas amatpersonas",
             "NOTHING"
         };
         private static readonly string[] AttendedSplitOptions = { ", ", "," };
         private static readonly string[] NotAttendedSplitOptions = { ", ", "; ", "," };
-        private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
-        //private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
+        //private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
+        private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
         //private static readonly string[] NotAttendedInternalSplitOptions = { "/" };
         private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
         {
             //{ "", "" },
-            { "i.blumberga", "Ināra Blumberga" },
-            { "u.auzans", "Uldis Auzāns" },
-            { "a.kokins", "Aivis Kokins" },
-            { "o.speka", "Olita Spēka" },
-            { "d.geidane", "Daiga Ģeidāne" },
-            { "a.bikaunieks", "Andis Bikaunieks" },
-            { "g.audzitis", "Gints Audzītis" },
-            { "m.balodis", "Māris Balodis" },
-            { "s.vecumniece", "Sandra Vecumniece" },
-            { "a.lemaka", "Anita Lemaka" },
-            { "m.pavars", "Modris Pavārs" },
-            { "a.vanags", "Aivars Vanags" },
-            { "i.jatniece", "Ieva Jātniece" },
-            { "a.kiploks", "Armands Ķiploks" },
-            { "inara blumberga", "Ināra Blumberga" },
-            { "uldis auzans", "Uldis Auzāns" },
-            { "aivis kokins", "Aivis Kokins" },
-            { "olita speka", "Olita Spēka" },
-            { "daiga geidane", "Daiga Ģeidāne" },
-            { "andis bikaunieks", "Andis Bikaunieks" },
-            { "gints audzitis", "Gints Audzītis" },
-            { "maris balodis", "Māris Balodis" },
-            { "sandra vecumniece", "Sandra Vecumniece" },
-            { "anita lemaka", "Anita Lemaka" },
-            { "modris pavars", "Modris Pavārs" },
-            { "aivars vanags", "Aivars Vanags" },
-            { "ievajatniece", "Ieva Jātniece" },
-            { "armands kiploks", "Armands Ķiploks" }
+            { "vitalijs aispurs", "Vitālijs Aišpurs" },
         };
 
-        public JekabpilsHandler() : base(
-            AttendedStartIndexMark, 
+        public SalaspilsHandler() : base(
+            AttendedStartIndexMark,
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
             NotAttendedEndIndexMark,
@@ -87,12 +47,12 @@ namespace PdfParsing.Results
 
         }
 
-        public string Name => "Jekabpils";
-        public string Prieksedetajs => "e.menkis";
+        public string Name => "Kraslava";
+        public string Prieksedetajs => "gunars upenieks";
         public int DeputatuSkaits => 14;
         public bool AttendedSplit => false;
         public bool NotAttendedSplit => false;
-        public bool AttendedNextLine => false;
+        public bool AttendedNextLine => true;
         public bool NotAttendedNextLine => false;
 
         public List<string> CleanAttended(List<string> attended, string prieksedetajs)

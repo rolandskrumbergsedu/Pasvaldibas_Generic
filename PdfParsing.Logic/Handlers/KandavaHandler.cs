@@ -1,56 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
-using PdfParsing.Logic.Handlers;
 
-namespace PdfParsing.Results
+namespace PdfParsing.Logic.Handlers
 {
-    public class JaunpilsHandler : GeneralHandler
+    public class KandavaHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            "deputati",
-            "Deputati",
-            "Komitejas deputāti",
-            "Komitejas deputati"
+            "Sēdē piedalās",
+            "Sede piedalas"
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
-            "darbinieki",
-            "Citi",
+            "Sēdē nepiedalās",
+            "Sede nepiedalas",
             "NOTHING"
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "SĒDĒ NEPIEDALĀS",
-            "SEDE NEPIEDALAS",
-            "Nepiedalās",
-            "Nepiedalas"
+            "Sēdē nepiedalās",
+            "Sede nepiedalas",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
-            "SĒDI PROTOKOLĒ",
-            "SEDI PROTOKOLE",
             "NOTHING"
         };
         private static readonly string[] AttendedSplitOptions = { ", ", "," };
         private static readonly string[] NotAttendedSplitOptions = { ", ", "; ", "," };
         //private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
-        //private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
-        private static readonly string[] NotAttendedInternalSplitOptions = { "/" };
+        private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
+        //private static readonly string[] NotAttendedInternalSplitOptions = { "/" };
         private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
         {
             //{ "", "" },
-            { "dace adina", "Dace Adiņa" },
-            { "velga pavlovska", "Velga Pavlovska" },
-            { "raivo altenburgs", "Raivo Altenburgs" },
-            { "kaspars leimanis", "Kaspars Leimanis" },
-            { "raivis pranis", "Raivis Pranis" },
-            { "aigars jakovels", "Aigars Jakovels" },
-            { "eriks strautins", "Ēriks Strautiņš" },
-            { "janis krumins", "Jānis Krūmiņš" }
+            { "g.birkensteins", " Gints Birkenšteins " },
+            { "s.ezerina", "Signe Ezeriņa" },
+            { "r.fabjanciks", "Romeks Fabjančiks" },
+            { "l.gudakovska", "Leonārija Gudakovska" },
+            { "g.indriksons", "Guntars Indriksons" },
+            { "a.kiegelis", "Alfreds Ķieģelis" },
+            { "i.lasis", "Ivars Lasis" },
+            { "a.petrevica", "Aksilda Petrevica" },
+            { "d.rozenfelds", "Dainis Rozenfelds" },
+            { "s.tiltina", "Silvija Tiltiņa" },
+            { "v.v.dreimanis", "Viesturs Valdis Dreimanis" },
+            { "i.ozols", "Ivars Ozols " },
+            { "i.priede", "Inga Priede" },
+            { "s.zvirgzdina", "Solvita Zvirgzdiņa" },
+            { "gints birkensteins", " Gints Birkenšteins " },
+            { "signe ezerina", "Signe Ezeriņa" },
+            { "romeks fabjanciks", "Romeks Fabjančiks" },
+            { "leonarija gudakovska", "Leonārija Gudakovska" },
+            { "guntars indriksons", "Guntars Indriksons" },
+            { "alfreds kiegelis", "Alfreds Ķieģelis" },
+            { "ivars lasis", "Ivars Lasis" },
+            { "aksilda petrevica", "Aksilda Petrevica" },
+            { "dainis rozenfelds", "Dainis Rozenfelds" },
+            { "silvija tiltina", "Silvija Tiltiņa" },
+            { "viesturs valdis dreimanis", "Viesturs Valdis Dreimanis" },
+            { "ivars ozols", "Ivars Ozols " },
+            { "inga priede", "Inga Priede" },
+            { "solvita zvirgzdina", "Solvita Zvirgzdiņa" }
         };
 
-        public JaunpilsHandler() : base(
+        public KandavaHandler() : base(
             AttendedStartIndexMark, 
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
@@ -63,11 +76,11 @@ namespace PdfParsing.Results
 
         }
 
-        public string Name => "Jaunpils";
-        public string Prieksedetajs => "ligita gintere";
-        public int DeputatuSkaits => 8;
+        public string Name => "Kandava";
+        public string Prieksedetajs => "n.stoferts";
+        public int DeputatuSkaits => 14;
         public bool AttendedSplit => false;
-        public bool NotAttendedSplit => false;
+        public bool NotAttendedSplit => true;
         public bool AttendedNextLine => false;
         public bool NotAttendedNextLine => false;
 

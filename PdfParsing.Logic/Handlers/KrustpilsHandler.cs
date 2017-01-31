@@ -4,21 +4,26 @@ using PdfParsing.Logic.Handlers;
 
 namespace PdfParsing.Results
 {
-    public class KokneseHandler : GeneralHandler
+    public class KrustpilsHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            "Domes deputāti",
-            "Domes deputati"
+            "Deputāti:",
+            "Deputati:",
+            "Deputāti",
+            "Deputati"
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
+            "Pašvaldības darbinieki:",
+            "Pašvaldibas darbinieki:",
+            "Pasvaldibas darbinieki:",
             "NOTHING"
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "SĒDĒ NEPIEDALĀS",
-            "SEDE NEPIEDALAS",
+            "Sēdē nepiedalās",
+            "Sede nepiedalas",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
@@ -27,29 +32,26 @@ namespace PdfParsing.Results
         private static readonly string[] AttendedSplitOptions = { ", ", "," };
         private static readonly string[] NotAttendedSplitOptions = { ", ", "; ", "," };
         private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
-        //private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
-        //private static readonly string[] NotAttendedInternalSplitOptions = { "/" };
         private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
         {
-            //{ "", "" },
-            { "valdis bikernieks", "Valdis Biķernieks" },
-            { "lidija degtjareva", "Lidija Degtjareva" },
-            { "janis dzenis", "Jānis Dzenis" },
-            { "peteris keiss", "Pēteris Keišs" },
-            { "janis krumins", "Jānis Krūmiņš" },
-            { "henriks locmelis", "Henriks Ločmelis" },
-            { "ivars malins", "Ivars Māliņš" },
-            { "janis miezitis", "Jānis Miezītis" },
-            { "edgars mikals", "Edgars Mikāls" },
-            { "maris reinbergs", "Māris Reinbergs" },
-            { "uldis riekstins", "Uldis Riekstiņš" },
-            { "arturs plume", "Artūrs Plūme" },
-            { "gita rutina", "Gita Rūtiņa" },
-            { "mudite aulina", "Mudīte Auliņa" },
+            { "dace broka", "Dace Broka" },
+            { "dace vitola", "Dace Vītola" },
+            { "dzintars skalbe", "Dzintars Skalbe" },
+            { "gundars kalve", "Gundars Kalve_Prieksedetajs" },
+            { "inese jaksone", "Inese Jaksone" },
+            { "juris puriskevics", "Juris Puriškevičs" },
+            { "janis pastars", "Jānis Pastars" },
+            { "martins felss", "Mārtiņš Felss" },
+            { "martins kalnins", "Mārtiņš Kalniņš" },
+            { "martins lazdans", "Mārtiņš Lazdāns" },
+            { "olgerts stalidzans", "Oļģerts Stalidzāns" },
+            { "peteris gravans", "Pēteris Gravāns" },
+            { "vija stiebrina", "Vija Stiebriņa" },
+            { "vladimirs golubevs", "Vladimirs Golubevs" }
         };
 
-        public KokneseHandler() : base(
-            AttendedStartIndexMark, 
+        public KrustpilsHandler() : base(
+            AttendedStartIndexMark,
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
             NotAttendedEndIndexMark,
@@ -61,12 +63,12 @@ namespace PdfParsing.Results
 
         }
 
-        public string Name => "Koknese";
-        public string Prieksedetajs => "dainis vingris";
+        public string Name => "Krustpils";
+        public string Prieksedetajs => "karlis paberzs";
         public int DeputatuSkaits => 14;
         public bool AttendedSplit => false;
         public bool NotAttendedSplit => false;
-        public bool AttendedNextLine => false;
+        public bool AttendedNextLine => true;
         public bool NotAttendedNextLine => false;
 
         public List<string> CleanAttended(List<string> attended, string prieksedetajs)

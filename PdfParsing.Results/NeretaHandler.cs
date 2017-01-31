@@ -4,25 +4,20 @@ using PdfParsing.Logic.Handlers;
 
 namespace PdfParsing.Results
 {
-    public class KraslavaHandler : GeneralHandler
+    public class NeretaHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            "Piedalās",
-            "Piedalas",
+            ""
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
-            "Pašvaldības",
-            "Pašvaldibas",
+            "",
             "NOTHING"
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "SĒDĒ NEPIEDALĀS",
-            "SEDE NEPIEDALAS",
-            "Nepiedalās",
-            "Nepiedalas"
+            "",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
@@ -37,23 +32,10 @@ namespace PdfParsing.Results
         {
             //{ "", "" },
             { "vitalijs aispurs", "Vitālijs Aišpurs" },
-            { "vjaceslavs aprups", "Vjačeslavs Aprups" },
-            { "vera birina", "Vera Bīriņa" },
-            { "jazeps dobkevics", "Jāzeps Dobkevičs" },
-            { "aleksandrs jevtusoks", "Aleksandrs Jevtušoks" },
-            { "raimonds kalviss", "Raimonds Kalvišs" },
-            { "aivars krumins", "Aivars Krūmiņš" },
-            { "viktorija lene", "Viktorija Lene" },
-            { "antons laksa", "Antons Ļaksa" },
-            { "viktors moisejs", "Viktors Moisejs" },
-            { "janis tukans", "Jānis Tukāns" },
-            { "viktorija vengrevica", "Viktorija Vengreviča" },
-            { "eriks zaikovskis", "Ēriks Zaikovskis" },
-            { "francis zalbovics", "Francis Zalbovičs" }
         };
 
-        public KraslavaHandler() : base(
-            AttendedStartIndexMark, 
+        public NeretaHandler() : base(
+            AttendedStartIndexMark,
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
             NotAttendedEndIndexMark,

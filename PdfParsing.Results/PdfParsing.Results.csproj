@@ -53,15 +53,26 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Converter.cs" />
-    <Compile Include="JaunpilsHandler.cs" />
-    <Compile Include="JekabpilsHandler.cs" />
-    <Compile Include="KandavaHandler.cs" />
-    <Compile Include="KarsavaHandler.cs" />
-    <Compile Include="KegumsHandler.cs" />
-    <Compile Include="KokneseHandler.cs" />
-    <Compile Include="KraslavaHandler.cs" />
     <Compile Include="MunicipalityHandlers.cs" />
+    <Compile Include="NaukseniHandler.cs" />
+    <Compile Include="NeretaHandler.cs" />
+    <Compile Include="OzolniekiHandler.cs" />
+    <Compile Include="PargaujaHandler.cs" />
+    <Compile Include="PreiliHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RojaHandler.cs" />
+    <Compile Include="RopaziHandler.cs" />
+    <Compile Include="SalaHandler.cs" />
+    <Compile Include="SalaspilsHandler.cs" />
+    <Compile Include="SaldusHandler.cs" />
+    <Compile Include="SaulkrastiHandler.cs" />
+    <Compile Include="SejaHandler.cs" />
+    <Compile Include="SmilteneHandler.cs" />
+    <Compile Include="StopiniHandler.cs" />
+    <Compile Include="StrenciHandler.cs" />
+    <Compile Include="TalsiHandler.cs" />
+    <Compile Include="ValkaHandler.cs" />
+    <Compile Include="ValmieraHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PdfParsing.Logic\PdfParsing.Logic.csproj">

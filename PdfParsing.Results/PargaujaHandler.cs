@@ -1,29 +1,23 @@
 ﻿using System;
-using PdfParsing.Logic.Handlers;
 using System.Collections.Generic;
+using PdfParsing.Logic.Handlers;
 
 namespace PdfParsing.Results
 {
-    public class KegumsHandler : GeneralHandler
+    public class PargaujaHandler : GeneralHandler
     {
         private static readonly List<string> AttendedStartIndexMark = new List<string>
         {
-            "Sede piedalas",
-            "Sēdē piedalās"
+            ""
         };
         private static readonly List<string> AttendedEndIndexMark = new List<string>
         {
-            "administracijas",
-            "Nepiedalās",
-            "Nepiedalas",
+            "",
             "NOTHING"
         };
         private static readonly List<string> NotAttendedStartIndexMark = new List<string>
         {
-            "Nepiedalās",
-            "Nepiedalas",
-            "Sede nepiedalas",
-            "Sede nepiedalas"
+            "",
         };
         private static readonly List<string> NotAttendedEndIndexMark = new List<string>
         {
@@ -31,30 +25,17 @@ namespace PdfParsing.Results
         };
         private static readonly string[] AttendedSplitOptions = { ", ", "," };
         private static readonly string[] NotAttendedSplitOptions = { ", ", "; ", "," };
-        private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
-        //private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
+        //private static readonly string[] NotAttendedInternalSplitOptions = { "-", "–" };
+        private static readonly string[] NotAttendedInternalSplitOptions = { "(", ")" };
         //private static readonly string[] NotAttendedInternalSplitOptions = { "/" };
         private static readonly Dictionary<string, string> Deputati = new Dictionary<string, string>
         {
             //{ "", "" },
-            { "valdis kalnins", "Valdis Kalniņš" },
-            { "pavels kotans", "Pāvels Kotāns" },
-            { "dace malina", "Dace Māliņa" },
-            { "janis prizevoits", "Jānis Priževoits" },
-            { "kristaps rude", "Kristaps Rūde" },
-            { "liga strauss", "Līga Strauss" },
-            { "viesturs teicans", "Viesturs Teicāns" },
-            { "raivis uzuls", "Raivis Ūzuls" },
-            { "tadeuss valevko", "Tadeušs Vaļevko" },
-            { "daina vanaga", "Daina Vanaga" },
-            { "ilmars zemnieks", "Ilmārs Zemnieks" },
-            { "andris balodis", "Andris Balodis" },
-            { "rita reinsone", "Rita Reinsone" },
-            { "valentins pastars", "Valentīns Pastars" }
+            { "vitalijs aispurs", "Vitālijs Aišpurs" },
         };
 
-        public KegumsHandler() : base(
-            AttendedStartIndexMark, 
+        public PargaujaHandler() : base(
+            AttendedStartIndexMark,
             AttendedEndIndexMark,
             NotAttendedStartIndexMark,
             NotAttendedEndIndexMark,
@@ -66,12 +47,12 @@ namespace PdfParsing.Results
 
         }
 
-        public string Name => "Kegums";
-        public string Prieksedetajs => "ŗoberts ozols";
+        public string Name => "Kraslava";
+        public string Prieksedetajs => "gunars upenieks";
         public int DeputatuSkaits => 14;
         public bool AttendedSplit => false;
         public bool NotAttendedSplit => false;
-        public bool AttendedNextLine => false;
+        public bool AttendedNextLine => true;
         public bool NotAttendedNextLine => false;
 
         public List<string> CleanAttended(List<string> attended, string prieksedetajs)

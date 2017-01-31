@@ -498,9 +498,18 @@ namespace PdfParsing.Logic.Handlers
                     yearIndex = j;
                 }
             }
-            
-            var date = dateSplitted[yearIndex+1];
-            var month = dateSplitted[yearIndex+2];
+
+            var dateIndex = 1;
+            var monthIndex = 2;
+
+            if (yearIndex >= dateSplitted.Length || yearIndex + 1 >= dateSplitted.Length)
+            {
+                dateIndex = -2;
+                monthIndex = -1;
+            }
+
+            var date = dateSplitted[yearIndex + dateIndex];
+            var month = dateSplitted[yearIndex + monthIndex];
 
             switch (month)
             {
